@@ -1,1 +1,11 @@
 db.sqlite3
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.sqlite3
+.env
+.env.*
+!.env.example
+staticfiles/
+.pytest_cache/
