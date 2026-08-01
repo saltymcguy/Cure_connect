@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: cure-connect
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn Cure_connect.wsgi"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: DJANGO_SETTINGS_MODULE
+        value: Cure_connect.production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
