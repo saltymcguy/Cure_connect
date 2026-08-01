@@ -15,21 +15,17 @@ ALLOWED_HOSTS = allowed_hosts
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'change-me-in-production')
 
-if os.environ.get('DATABASE_URL'):
+if os.environ.get('DATABASE_URL') and os.environ.get('DATABASE_URL').startswith(('postgres://', 'postgresql://', 'pgsql://')):
     import dj_database_url
 
     DATABASES = {
-        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('DATABASE_NAME', 'cure_connect'),
-            'USER': os.environ.get('DATABASE_USER', 'postgres'),
-            'PASSWORD': os.environ.get('DATABASE_PASSWORD', ''),
-            'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
-            'PORT': os.environ.get('DATABASE_PORT', '5432'),
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
 
