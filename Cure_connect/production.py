@@ -2,7 +2,11 @@ import os
 from .settings import *
 
 DEBUG = False
-ALLOWED_HOSTS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME', 'localhost')]
+ALLOWED_HOSTS = [
+    os.environ.get('RAILWAY_STATIC_URL', '').replace('https://', '').replace('/', ''),
+    'localhost',
+    '127.0.0.1',
+]
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'change-me-in-production')
 
