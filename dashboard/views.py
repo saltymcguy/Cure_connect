@@ -1,21 +1,32 @@
+from django.db import OperationalError, ProgrammingError
 from django.shortcuts import render
+
+from appointments.models import Appointment
 from doctors.models import Doctor
 from patients.models import Patient
-from appointments.models import Appointment
 
-# Create your views here.
+
+def _safe_queryset(model):
+    try:
+        return model.objects.all()
+    except (OperationalError, ProgrammingError):
+        return model.objects.none()
+
 
 def home(request):
     return render(request, "home.html")
 
+
 def patient_dashboard(request):
-    patients = Patient.objects.all()
+    patients = _safe_queryset(Patient)
     return render(request, "patient_dashboard.html", {"patients": patients})
 
+
 def doctor_dashboard(request):
-    doctors = Doctor.objects.all()
+    doctors = _safe_queryset(Doctor)
     return render(request, "doctor_dashboard.html", {"doctors": doctors})
 
+
 def appointment_dashboard(request):
-    appointments = Appointment.objects.all()
+    appointments = _safe_queryset(Appointment)
     return render(request, "appointment_dashboard.html", {"appointments": appointments})
