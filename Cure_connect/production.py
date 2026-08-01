@@ -2,11 +2,16 @@ import os
 from .settings import *
 
 DEBUG = False
-ALLOWED_HOSTS = [
-    os.environ.get('RAILWAY_STATIC_URL', '').replace('https://', '').replace('/', ''),
-    'localhost',
-    '127.0.0.1',
-]
+
+allowed_hosts = []
+for env_name in ('RAILWAY_PUBLIC_DOMAIN', 'RENDER_EXTERNAL_HOSTNAME', 'RAILWAY_STATIC_URL'):
+    value = os.environ.get(env_name, '').strip()
+    if value:
+        value = value.replace('https://', '').replace('http://', '').split('/')[0]
+        allowed_hosts.append(value)
+
+allowed_hosts.extend(['localhost', '127.0.0.1', '.railway.app'])
+ALLOWED_HOSTS = allowed_hosts
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'change-me-in-production')
 

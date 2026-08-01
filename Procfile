@@ -1,1 +1,1 @@
-web: gunicorn Cure_connect.wsgi --log-file -
+web: gunicorn Cure_connect.wsgi:application --log-file -
